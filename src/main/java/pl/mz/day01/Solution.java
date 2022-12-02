@@ -1,12 +1,12 @@
 package pl.mz.day01;
 
-import pl.mz.tools.FileReader;
+import pl.mz.tools.FileProcessor;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 
-public class Day1 {
+public class Solution {
 
     public static void main(String[] args) {
         ArrayList<Integer> caloriesList = solve("src/main/java/pl/mz/day01/input.txt");
@@ -22,8 +22,8 @@ public class Day1 {
     private static ArrayList<Integer> solve(String file) {
         int tempSum = 0;
         ArrayList<Integer> outputList = new ArrayList<>();
-        LinkedList<String> fileList = FileReader.readFile(file);
-        for(String e : fileList){
+        LinkedList<String> fileList = FileProcessor.readFile(file);
+        for (String e : fileList) {
             if (!e.equals(""))
                 tempSum += Integer.parseInt(e);
             else {

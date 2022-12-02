@@ -1,13 +1,13 @@
 package pl.mz.day02;
 
-import pl.mz.tools.FileReader;
+import pl.mz.tools.FileProcessor;
 
 import java.util.LinkedList;
 
-public class Day2 {
+public class Solution {
 
     public static void main(String[] args) {
-        LinkedList<String> fileList = FileReader.readFile("src/main/java/pl/mz/day02/input.txt");
+        LinkedList<String> fileList = FileProcessor.readFile("src/main/java/pl/mz/day02/input.txt");
         int totalScore = 0;
         for (String e : fileList) {
             String[] turns = e.split(" ");
@@ -17,7 +17,7 @@ public class Day2 {
         totalScore = 0;
         for (String e : fileList) {
             String[] turns = e.split(" ");
-            totalScore += calcScore(Game.fromInput(turns[0]), findAnswer(Game.fromInput(turns[0]),turns[1]));
+            totalScore += calcScore(Game.fromInput(turns[0]), findAnswer(Game.fromInput(turns[0]), turns[1]));
         }
         System.out.println("Part 2: " + totalScore);
     }
@@ -33,13 +33,13 @@ public class Day2 {
             return 6 + me.getScore();
     }
 
-    private static Game findAnswer(Game elf, String resultType){
-       return switch (resultType){
-           case "Y"  -> elf;
-           case "X" -> Game.findWeaker(elf);
-           case "Z" -> Game.findStronger(elf);
-           default -> null;
-       };
+    private static Game findAnswer(Game elf, String resultType) {
+        return switch (resultType) {
+            case "Y" -> elf;
+            case "X" -> Game.findWeaker(elf);
+            case "Z" -> Game.findStronger(elf);
+            default -> null;
+        };
     }
 
     private enum Game {
@@ -66,19 +66,20 @@ public class Day2 {
             }
             return null;
         }
-        public static Game findStronger(Game input){
-           return switch (input){
+
+        public static Game findStronger(Game input) {
+            return switch (input) {
                 case PAPER -> SCISSORS;
                 case SCISSORS -> ROCK;
-               case ROCK  -> PAPER;
+                case ROCK -> PAPER;
             };
         }
 
-        public static Game findWeaker(Game input){
-            return switch (input){
+        public static Game findWeaker(Game input) {
+            return switch (input) {
                 case PAPER -> ROCK;
                 case SCISSORS -> PAPER;
-                case ROCK  -> SCISSORS;
+                case ROCK -> SCISSORS;
             };
         }
 
