@@ -10,3 +10,6 @@
 ### Day 3:
 [task](https://adventofcode.com/2022/day/3) \
 [solution](/src/main/java/pl/mz/day03/Solution.java)
+### Day 4:
+[task](https://adventofcode.com/2022/day/4) \
+[solution](/src/main/java/pl/mz/day04/Solution.java)

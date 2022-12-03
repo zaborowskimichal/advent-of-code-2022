@@ -9,63 +9,48 @@ public class Solution {
 
     public static void main(String[] args) {
         LinkedList<String> fileList = FileProcessor.readFile("src/main/java/pl/mz/day03/input.txt");
-        for (int i = 1; i < 3; i++) {
-            ArrayList<String[]> backpacks = convertFileList(fileList, i);
-            List<Character> letters = compareBakcpacks(backpacks, i);
-            System.out.println("Part " + i + ": " + letters.stream().mapToInt(Solution::calculateCharValue).sum());
+        for (int part = 1; part < 3; part++) {
+            ArrayList<String[]> backpacks = convertFileList(fileList, part);
+            List<Character> letters = compareBakcpacks(backpacks);
+            System.out.println("Part " + part + ": " + letters.stream().mapToInt(Solution::calculateCharValue).sum());
         }
     }
 
     public static ArrayList<String[]> convertFileList(LinkedList<String> fileList, int part) {
+        ArrayList<String[]> result;
         if (part == 1)
-            return (ArrayList<String[]>) fileList.stream().map(Solution::splitBackpack).collect(Collectors.toList());
-        int counter = 0;
-        ArrayList<String[]> result = new ArrayList<>();
-        String[] temp = new String[3];
-        for (String s : fileList) {
-            temp[counter] = s;
-            if (counter < 2) {
-                counter++;
-            } else {
-                result.add(temp);
-                temp = new String[3];
-                counter = 0;
-            }
+            result = (ArrayList<String[]>) fileList.stream().map(Solution::splitBackpack).collect(Collectors.toList());
+        else {
+            result = new ArrayList<>();
+            fileList.stream()
+                    .filter(e -> fileList.indexOf(e) % 3 == 0)
+                    .forEach(e -> result.add(fileList.subList(fileList.indexOf(e), fileList.indexOf(e) + 3)
+                            .toArray(new String[0])));
         }
-        if (counter != 0) result.add(temp);
         return result;
     }
-
 
     public static String[] splitBackpack(String text) {
         return new String[]{text.substring(0, text.length() / 2), text.substring(text.length() / 2)};
     }
 
-    public static HashSet<Character> findCommonCharacters(String first, String second) {
-        HashSet<Character> result = new HashSet<>();
-        HashSet<Character> charSet = new HashSet<>();
-        for (char c : first.toCharArray()) charSet.add(c);
-        for (char c : second.toCharArray()) if (charSet.contains(c)) result.add(c);
+    public static HashSet<Character> findCommonCharacters(String[] backpacks) {
+        ArrayList<HashSet<Character>> commonList = new ArrayList<>();
+        Arrays.stream(backpacks).forEach(e -> commonList.add(new HashSet<>()));
+        for (int i = 0; i < commonList.size(); i++) {
+            for (char c : backpacks[i].toCharArray()) {
+                if (i > 0) {
+                    if (commonList.get(i - 1).contains(c)) commonList.get(i).add(c);
+                } else
+                    commonList.get(i).add(c);
+            }
+        }
 
-        return result;
+        return commonList.get(commonList.size() - 1);
     }
 
-    public static HashSet<Character> findCommonCharacters(String first, String second, String third) {
-        HashSet<Character> commonPart = new HashSet<>();
-        HashSet<Character> charSet = new HashSet<>();
-        HashSet<Character> result = new HashSet<>();
-        for (char c : first.toCharArray()) charSet.add(c);
-        for (char c : second.toCharArray()) if (charSet.contains(c)) commonPart.add(c);
-        for (char c : third.toCharArray()) if (commonPart.contains(c)) result.add(c);
-
-        return result;
-    }
-
-    public static List<Character> compareBakcpacks(List<String[]> backpacks, int part) {
-        if (part == 1) return backpacks.stream().map(e -> findCommonCharacters(e[0], e[1]))
-                .flatMap(Collection::stream)
-                .collect(Collectors.toList());
-        else return backpacks.stream().map(e -> findCommonCharacters(e[0], e[1], e[2]))
+    public static List<Character> compareBakcpacks(List<String[]> backpacks) {
+        return backpacks.stream().map(Solution::findCommonCharacters)
                 .flatMap(Collection::stream)
                 .collect(Collectors.toList());
     }
