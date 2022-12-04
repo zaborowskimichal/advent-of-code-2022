@@ -4,7 +4,7 @@ import pl.mz.tools.FileProcessor;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedList;
+import java.util.List;
 
 public class Solution {
 
@@ -22,7 +22,7 @@ public class Solution {
     private static ArrayList<Integer> solve(String file) {
         int tempSum = 0;
         ArrayList<Integer> outputList = new ArrayList<>();
-        LinkedList<String> fileList = FileProcessor.readFile(file);
+        List<String> fileList = FileProcessor.readFile(file);
         for (String e : fileList) {
             if (!e.equals(""))
                 tempSum += Integer.parseInt(e);
