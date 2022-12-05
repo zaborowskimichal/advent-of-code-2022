@@ -3,12 +3,14 @@ package pl.mz.tools;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.LinkedList;
-import java.util.List;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Paths;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class FileProcessor {
 
-    public static List<String> readFile(String filePath) {
+    public static List<String> readFileToList(String filePath) {
         List<String> output = new LinkedList<>();
         String currentLine;
         BufferedReader bufferedReader;
@@ -28,6 +30,24 @@ public class FileProcessor {
         }
 
         return output;
+    }
+
+    public static String readFileToString(String filePath) {
+        Scanner scanner = null;
+        try {
+            scanner = new Scanner(Paths.get(filePath), StandardCharsets.UTF_8);
+            return scanner.useDelimiter("\\A").next();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            if (scanner != null)
+                scanner.close();
+        }
+    }
+
+    public static ArrayList<String> splitLines(String text, String split) {
+        return (ArrayList<String>) Arrays.stream(text.split(split)).collect(Collectors.toList());
     }
 
 

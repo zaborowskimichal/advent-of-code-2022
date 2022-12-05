@@ -22,7 +22,7 @@ public class Solution {
     private static ArrayList<Integer> solve(String file) {
         int tempSum = 0;
         ArrayList<Integer> outputList = new ArrayList<>();
-        List<String> fileList = FileProcessor.readFile(file);
+        List<String> fileList = FileProcessor.readFileToList(file);
         for (String e : fileList) {
             if (!e.equals(""))
                 tempSum += Integer.parseInt(e);

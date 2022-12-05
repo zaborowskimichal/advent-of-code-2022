@@ -7,7 +7,7 @@ import java.util.stream.IntStream;
 
 public class Solution {
     public static void main(String[] args) {
-        List<String> fileList = FileProcessor.readFile("src/main/java/pl/mz/day04/input.txt");
+        List<String> fileList = FileProcessor.readFileToList("src/main/java/pl/mz/day04/input.txt");
         List<String[]> elfPair = fileList.stream().map(e -> e.split(",")).toList();
         List<Range[]> rangePairs = elfPair.stream()
                 .map(pair -> new Range[]{new Range(rangeSplit(pair[0])), new Range(rangeSplit(pair[1]))})

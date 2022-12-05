@@ -7,7 +7,7 @@ import java.util.List;
 public class Solution {
 
     public static void main(String[] args) {
-        List<String> fileList = FileProcessor.readFile("src/main/java/pl/mz/day02/input.txt");
+        List<String> fileList = FileProcessor.readFileToList("src/main/java/pl/mz/day02/input.txt");
         int totalScore = 0;
         for (String e : fileList) {
             String[] turns = e.split(" ");

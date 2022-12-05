@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 public class Solution {
 
     public static void main(String[] args) {
-        List<String> fileList = FileProcessor.readFile("src/main/java/pl/mz/day03/input.txt");
+        List<String> fileList = FileProcessor.readFileToList("src/main/java/pl/mz/day03/input.txt");
         for (int part = 1; part < 3; part++) {
             ArrayList<String[]> backpacks = convertFileList(fileList, part);
             List<Character> letters = compareBakcpacks(backpacks);
