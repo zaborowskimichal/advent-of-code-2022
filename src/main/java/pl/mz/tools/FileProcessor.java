@@ -33,21 +33,20 @@ public class FileProcessor {
     }
 
     public static String readFileToString(String filePath) {
-        Scanner scanner = null;
-        try {
-            scanner = new Scanner(Paths.get(filePath), StandardCharsets.UTF_8);
+        try (Scanner scanner = new Scanner(Paths.get(filePath), StandardCharsets.UTF_8)) {
             return scanner.useDelimiter("\\A").next();
         } catch (IOException e) {
             e.printStackTrace();
             return null;
-        } finally {
-            if (scanner != null)
-                scanner.close();
         }
     }
 
     public static ArrayList<String> splitLines(String text, String split) {
         return (ArrayList<String>) Arrays.stream(text.split(split)).collect(Collectors.toList());
+    }
+
+    public static String[] splitStringByLine(String text){
+        return text.split("\r\n");
     }
 
 
