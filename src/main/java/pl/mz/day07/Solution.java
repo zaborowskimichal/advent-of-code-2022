@@ -3,13 +3,15 @@ package pl.mz.day07;
 import pl.mz.tools.FileProcessor;
 import pl.mz.tools.Tree;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.stream.Collectors;
 
 
 public class Solution {
 
-    public static LinkedList<Tree<Integer>> countedList = new LinkedList<>();
-    public static LinkedList<Tree<Integer>> directoryList = new LinkedList<>();
+    public static ArrayList<Tree<Integer>> countedList = new ArrayList<>();
+    public static ArrayList<Tree<Integer>> directoriesList = new ArrayList<>();
 
     public static void main(String[] args) {
         String fileString = FileProcessor.readFileToString("src/main/java/pl/mz/day07/input.txt");
@@ -36,9 +38,15 @@ public class Solution {
         System.out.println("Part 1: " + countedList.stream().mapToInt(Tree::getValue).sum());
 
         findDirectories(rootDirectory);
-        directoryList.removeFirst();
-        System.out.println(rootDirectory.getValue());
-        directoryList.forEach(e -> System.out.println(e.getName() + " " + e.getValue()));
+        directoriesList.remove(0);
+        ArrayList<Integer> resultList = (ArrayList<Integer>) directoriesList
+                .stream()
+                .map(Tree::getValue)
+                .collect(Collectors.toList());
+        Collections.sort(resultList);
+        int toDelete = 30_000_000 - 70_000_000 + rootDirectory.getValue();
+        int output = resultList.stream().filter(e -> e > toDelete).findFirst().get();
+        System.out.println("Part 2: " + output);
     }
 
 
@@ -72,7 +80,7 @@ public class Solution {
 
     public static void findDirectories(Tree<Integer> root) {
         if (root.getNodesSize() != 0)
-            directoryList.add(root);
+            directoriesList.add(root);
         root.getNodes().forEach(Solution::findDirectories);
     }
 
