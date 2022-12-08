@@ -34,7 +34,7 @@ public class Solution {
             }
         }
         calculateDirectoriesMemory(rootDirectory);
-        findTreesBelowMax(rootDirectory, 100000);
+        findTreesBelowMax(rootDirectory, 100000, countedList);
         System.out.println("Part 1: " + countedList.stream().mapToInt(Tree::getValue).sum());
 
         findDirectories(rootDirectory);
@@ -72,10 +72,11 @@ public class Solution {
         return new Tree<>(name, value);
     }
 
-    public static void findTreesBelowMax(Tree<Integer> root, int max) {
-        if (root.getValue() <= max && root.getNodesSize() != 0)
-            countedList.add(root);
-        root.getNodes().forEach(e -> findTreesBelowMax(e, max));
+    public static void findTreesBelowMax(Tree<Integer> root, int max, ArrayList<Tree<Integer>> list) {
+        if (root.getValue() <= max && root.getNodesSize() != 0) {
+            list.add(root);
+        }
+        root.getNodes().forEach(e -> findTreesBelowMax(e, max, list));
     }
 
     public static void findDirectories(Tree<Integer> root) {
