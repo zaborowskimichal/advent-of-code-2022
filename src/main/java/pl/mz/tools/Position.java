@@ -5,10 +5,6 @@ public class Position<T> {
     private int y;
     private T value;
 
-    public Position(int x, int y) {
-        this.x = x;
-        this.y = y;
-    }
 
     public Position(int x, int y, T value) {
         this.x = x;
@@ -16,9 +12,6 @@ public class Position<T> {
         this.value = value;
     }
 
-    public int[] getPosition() {
-        return new int[]{this.x, this.y};
-    }
 
     public int getX() {
         return x;
@@ -42,5 +35,14 @@ public class Position<T> {
 
     public void setValue(T value) {
         this.value = value;
+    }
+
+    @Override
+    public String toString() {
+        return "Position{" +
+                "x=" + x +
+                ", y=" + y +
+                ", value=" + value +
+                '}';
     }
 }
