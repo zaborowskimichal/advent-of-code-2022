@@ -3,70 +3,66 @@ package pl.mz.day09;
 import pl.mz.tools.FileProcessor;
 import pl.mz.tools.Position;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.stream.Collectors;
 
 public class Solution {
     public static void main(String[] args) {
-        LinkedList<String> commandsList = (LinkedList<String>) FileProcessor.readFileToList("src/main/java/pl/mz/day09/input.txt");
-        Position<Integer> startPosition = new Position<>(0, 0, 1);
-        LinkedList<Position<Integer>> headPositions = new LinkedList<>();
-        LinkedList<Position<Integer>> tailPositions = new LinkedList<>();
-        Position<Integer> tail = new Position<>(startPosition.getX(), startPosition.getY(), 0);
-        Position<Integer> head = new Position<>(startPosition);
+        LinkedList<String> fileList = (LinkedList<String>) FileProcessor.readFileToList("src/main/java/pl/mz/day09/input.txt");
+        ArrayList<Command> commandsList = (ArrayList<Command>) fileList.stream().map(Command::new).collect(Collectors.toList());
 
-        tailPositions.add(tail);
-        headPositions.add(head);
-        int counter = 0;
-        for (String command : commandsList) {
-            String[] splitted = command.split(" ");
-            Direction direction = Direction.DOWN.getfromString(splitted[0]);
-            int value = Integer.parseInt(splitted[1]);
-//            System.out.println("~~~~~~Movement: " + direction + " " + value + "~~~~~~");
-            for (int i = 1; i <= value; i++) {
-                head = movePosition(headPositions.getLast(), direction, 1);
-                tail = calculateTailPosition(tail, headPositions.getLast(), head);
-                headPositions.add(head);
-                boolean isInList = false;
-                if (tail != null) {
-                    for (int j = 0; j < tailPositions.size(); j++) {
-                        Position<Integer> current = tailPositions.get(j);
-                        if (current.getX() == tail.getX() && current.getY() == tail.getY()) {
-                            isInList = true;
-                            tail = tailPositions.remove(j);
-                            tail.setValue(tail.getValue() + 1);
-                            tailPositions.add(tail);
-                        }
-                    }
-                    if (!isInList) {
-                        tailPositions.add(tail);
-                    }
-                } else {
-                    tail = tailPositions.getLast();
+        System.out.println("Part 1: " + calcVisitedByLastKnot(commandsList, 2));
+        System.out.println("Part 2: " + calcVisitedByLastKnot(commandsList, 10));
+    }
+
+    private static int calcVisitedByLastKnot(ArrayList<Command> commands, int knotsQuantity) {
+        HashSet<Position<Integer>> visitedByLast = new HashSet<>();
+        Position<Integer>[] knots = new Position[knotsQuantity];
+        Arrays.fill(knots, new Position<>(0, 0, 0));
+
+        for (Command command : commands) {
+            for (int i = 0; i < command.getValue(); i++) {
+                knots[0] = movePosition(knots[0], command.getDirection());
+
+                Position<Integer> last = knots[0];
+                for (int j = 1; j < knots.length; j++) {
+                    knots[j] = moveToLast(knots[j], last);
+                    last = knots[j];
                 }
-//                printArray(mapToArray(headPositions), head, tail);
-
-
+                visitedByLast.add(knots[knotsQuantity - 1]);
             }
-            counter++;
-            System.out.println(counter);
         }
-        System.out.println(tailPositions.size());
-
-
+        return visitedByLast.size();
     }
 
-    private static Position<Integer> calculateTailPosition(Position<Integer> tail, Position<Integer> before, Position<Integer> after) {
-        int xDiff = Math.abs(after.getX() - tail.getX());
-        int yDiff = Math.abs(after.getY() - tail.getY());
-        if (xDiff > 1 || yDiff > 1) {
-            return new Position<>(before);
+    private static Position<Integer> moveToLast(Position<Integer> tail, Position<Integer> head) {
+        int xDiff = head.getX() - tail.getX();
+        int yDiff = head.getY() - tail.getY();
+        if (Math.abs(xDiff) > 1 || Math.abs(yDiff) > 1) {
+            Position<Integer> position = new Position<>(tail);
+            if (xDiff > 0) {
+                position.moveX(1);
+            } else if (xDiff < 0) {
+                position.moveX(-1);
+            }
+
+            if (yDiff > 0) {
+                position.moveY(1);
+            } else if (yDiff < 0) {
+                position.moveY(-1);
+            }
+
+            return position;
         } else {
-            return null;
+            return tail;
         }
     }
 
-    public static Position<Integer> movePosition(Position<Integer> position, Direction direction, int value) {
-        value *= direction.isTurn() ? 1 : -1;
+    public static Position<Integer> movePosition(Position<Integer> position, Direction direction) {
+        int value = direction.isTurn() ? 1 : -1;
         Position<Integer> result = new Position<>(position);
         if (direction.getDirection() == 'Y') {
             result.moveY(value);
@@ -76,40 +72,30 @@ public class Solution {
         return result;
     }
 
-    public static int[][] mapToArray(LinkedList<Position<Integer>> list) {
-        int maxX = list.stream().mapToInt(Position::getX).max().getAsInt();
-        int maxY = list.stream().mapToInt(Position::getY).max().getAsInt();
+    private static class Command {
+        private Direction direction;
+        private int value;
 
-        int[][] result = new int[maxY + 1][maxX + 1];
-        for (Position<Integer> p : list) {
-            result[p.getY()][p.getX()] = p.getValue();
+        public Command(String text) {
+            String[] divided = text.split(" ");
+            this.direction = Direction.getFromString(divided[0]);
+            this.value = Integer.parseInt(divided[1]);
         }
 
-        return result;
-    }
-
-    public static void printArray(int[][] board) {
-        for (int i = board.length - 1; i >= 0; i--) {
-            for (int j = 0; j < board[0].length; j++) {
-                System.out.print(board[i][j] != 0 ? "#" : ".");
-            }
-            System.out.println();
+        public Direction getDirection() {
+            return direction;
         }
-    }
 
-    public static void printArray(int[][] board, Position<Integer> head, Position<Integer> tail) {
-        for (int i = board.length - 1; i >= 0; i--) {
-            for (int j = 0; j < board[0].length; j++) {
-                if (i == head.getY() && j == head.getX()) {
-                    System.out.print("H");
-                } else if (i == tail.getY() && j == tail.getX()) {
-                    System.out.print("T");
-                } else {
-                    System.out.print(".");
-                }
-//                System.out.print(board[i][j] != 0 ? "#" : ".");
-            }
-            System.out.println();
+        public int getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return "Command{" +
+                    "direction=" + direction +
+                    ", value=" + value +
+                    '}';
         }
     }
 
@@ -129,7 +115,7 @@ public class Solution {
             this.turn = turn;
         }
 
-        public Direction getfromString(String text) {
+        public static Direction getFromString(String text) {
             for (Direction d : Direction.values()) {
                 if (text.charAt(0) == d.id)
                     return d;
