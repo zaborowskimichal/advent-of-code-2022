@@ -12,10 +12,25 @@ public class Position<T> {
         this.value = value;
     }
 
+    public Position(Position<T> position){
+        this.x = position.getX();
+        this.y = position.getY();
+        this.value = position.getValue();
+    }
+
 
     public int getX() {
         return x;
     }
+
+    public void moveX(int x){
+        this.x += x;
+    }
+
+    public void moveY(int y){
+        this.y += y;
+    }
+
 
     public void setX(int x) {
         this.x = x;
