@@ -8,7 +8,7 @@
 | [solution](/src/main/java/pl/mz/day01/Solution.java) | [solution](/src/main/java/pl/mz/day02/Solution.java) | [solution](/src/main/java/pl/mz/day03/Solution.java) | [solution](/src/main/java/pl/mz/day04/Solution.java) | [solution](/src/main/java/pl/mz/day05/Solution.java) | [solution](/src/main/java/pl/mz/day06/Solution.java) | [solution](/src/main/java/pl/mz/day07/Solution.java) |
 
 ## Week 2:
-|                        Day 8                         |                        Day 9                         |                        Day 10                        | Day 11 | Day 12 | Day 13 | Day 14 |
-|:----------------------------------------------------:|:----------------------------------------------------:|:----------------------------------------------------:|:------:|:------:|:------:|:------:|
-|     [task](https://adventofcode.com/2022/day/8)      |     [task](https://adventofcode.com/2022/day/9)      |     [task](https://adventofcode.com/2022/day/10)     |        |        |        |        |
-| [solution](/src/main/java/pl/mz/day08/Solution.java) | [solution](/src/main/java/pl/mz/day09/Solution.java) | [solution](/src/main/java/pl/mz/day10/Solution.java) |        |        |        |        |  
+|                        Day 8                         |                        Day 9                         |                        Day 10                        |                        Day 11                        | Day 12 | Day 13 | Day 14 |
+|:----------------------------------------------------:|:----------------------------------------------------:|:----------------------------------------------------:|:----------------------------------------------------:|:------:|:------:|:------:|
+|     [task](https://adventofcode.com/2022/day/8)      |     [task](https://adventofcode.com/2022/day/9)      |     [task](https://adventofcode.com/2022/day/10)     |     [task](https://adventofcode.com/2022/day/11)     |        |        |        |
+| [solution](/src/main/java/pl/mz/day08/Solution.java) | [solution](/src/main/java/pl/mz/day09/Solution.java) | [solution](/src/main/java/pl/mz/day10/Solution.java) | [solution](/src/main/java/pl/mz/day11/Solution.java) |        |        |        |  
